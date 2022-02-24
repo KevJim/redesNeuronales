@@ -7,12 +7,12 @@ Created on Wed Feb 16 08:11:22 2022
 
 from sklearn.neural_network import MLPClassifier
 
-clf = MLPClassifier(verbose=False, warm_start=True)
+clf = MLPClassifier(verbose=False, warm_start=True, activation="relu")
 
 #Creamos las tres opciones del juego
 options = ["piedra", "tijeras", "papel"]
 
-# esta funsión busca quien es el ganador y da como resultado un número aludiendo al player ganador.
+# esta función busca quien es el ganador y da como resultado un número aludiendo al player ganador.
 def search_winner(p1, p2):
     if p1 == p2:
         result = 0
@@ -30,21 +30,7 @@ def search_winner(p1, p2):
     elif p1 == "papel" and p2 == "tijeras":
         result = 2
         
-    return result    
-
-# se crea un test para la busqueda dle ganador lo que se hace es saber si al buscar el ganador la funsión entrega el resultado 
-# correcto
-test = [
-    ["piedra", "piedra", 0 ],
-    ["piedra", "tijeras", 1],
-    ["piedra", "papel", 2]
-]
-
-for partida in test:
-    print(partida)
-    print("Player1 %s Player2: %s Winner: %s Validation %s" % (
-        partida[0], partida[1], search_winner(partida[0], partida[1]), partida[2]
-    ))
+    return result  
     
 # para elegir de forma aleatoria las tres tipos de opciones, piedra , pepel o tijeras.
 from random import choice
@@ -66,8 +52,13 @@ def str_to_list(option):
 data_X = list(map(str_to_list, ["piedra", "tijeras", "papel"]))
 data_y = list(map(str_to_list, ["papel", "piedra", "tijeras"]))
 
-print(data_X) # la mostramos para corroborar.
+# la mostramos para corroborar.
+print(data_X) 
 print(data_y)
+
+print('-------------------')
+print(data_X[0])
+print(data_y[0])
 
 # Entrenamos al modelo, parte muy importante para entrenar el modelo.
 model = clf.fit([data_X[0]], [data_y[0]])
@@ -134,8 +125,7 @@ while True:
     
     if sum(historico_pct[-9:])==900:
         break
-
-print('Escoge un valor: ')
-preOption = input()
-predict = model.predict_proba([str_to_list(preOption)])[0]
-print('Predicccion: {}'.format(predict[0]))
+    
+#Guardamos el modelo con joblib
+from joblib import dump
+dump(model, 'pptJuego.joblib')

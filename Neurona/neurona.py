@@ -39,6 +39,7 @@ while x < 7:
             x = 0
         else:
             x += 1
+        print('Pesos {}'.format(weights))
     epoch+=1
     print(x)
     print('--------------')
